@@ -6,5 +6,13 @@ type AdminProps = {
 }
 
 export class Admin extends Entity<AdminProps> {
+  private constructor(props: AdminProps, id?: string){
+    super(props, id);
+  }
 
+  static create(props: AdminProps, id?: string){
+    const admin = new Admin(props);
+
+    return admin;
+  }
 }
