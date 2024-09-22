@@ -7,5 +7,5 @@ type StockProps = {
 }
 
 export class Stock {
-
+ penis
 }
