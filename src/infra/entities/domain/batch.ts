@@ -1,11 +1,12 @@
 import { Product } from "./product"
 
-type StockProps = {
+type BatchProps = {
   id: string,
+  title: string,
   products: Product[],
-  total: number,
+  total: number
 }
 
-export class Stock {
-
+export class Batch {
+  
 }
