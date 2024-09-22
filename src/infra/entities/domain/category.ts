@@ -2,9 +2,8 @@ import { Entity } from "../core/domain/entity"
 import { Product } from "./product"
 
 type CategoryProps = {
-  id: string,
   name: string,
-  products: Product[]
+  products?: Product[]
 }
 
 export class Category extends Entity<CategoryProps> {
@@ -12,7 +11,7 @@ export class Category extends Entity<CategoryProps> {
     super(props, id);
   }
 
-  public create(props: CategoryProps, id?: string){
+  static create(props: CategoryProps, id?: string){
     const category = new Category(props);
 
     return category;

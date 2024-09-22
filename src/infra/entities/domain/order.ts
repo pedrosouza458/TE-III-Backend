@@ -2,11 +2,12 @@ import { Entity } from "../core/domain/entity"
 import { Batch } from "./Batch"
 
 type OrderProps = {
-  id: string,
   batches: Batch[],
   total: string,
   discountPercentage: number,
   accepted: boolean,
+  delivered: boolean,
+  createdAt: Date,
 }
 
 export class Order extends Entity<OrderProps> {
@@ -14,7 +15,7 @@ export class Order extends Entity<OrderProps> {
     super(props, id);
   }
 
-  public create(props: OrderProps, id?: string){
+  static create(props: OrderProps, id?: string){
     const order = new Order(props);
 
     return order;

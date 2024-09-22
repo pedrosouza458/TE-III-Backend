@@ -5,10 +5,12 @@ import { Product } from "./product";
 
 type DistributorProps = {
   name: string,
+  address: string,
   department: Category[],
   description: string,
   selledProducts: number,
   distributionDiscount: number,
+  accepted: boolean,
   products: Product[],
   orders: Order[],
 }
@@ -18,7 +20,7 @@ export class Distributor extends Entity<DistributorProps> {
       super(props, id);
     }
 
-    public create(props: DistributorProps, id?: string){
+    static create(props: DistributorProps, id?: string){
       const distributor = new Distributor(props);
 
       return distributor;
