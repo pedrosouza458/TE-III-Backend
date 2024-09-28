@@ -1,3 +1,6 @@
+import { Error } from "../../../responses/error";
+import { Message } from "../../../responses/response";
+import { Success } from "../../../responses/success";
 import { Admin } from "../../entities/domain/admin";
 import { Distributor } from "../../entities/domain/distributor";
 import { AdminRepository } from "../admin-repository";
@@ -13,10 +16,18 @@ export class InMemoryAdminRepository implements AdminRepository {
   async deleteAdmin(adminId: string) {
     this.admin = this.admin.filter((a) => a.id !== adminId);
   }
-
-  async checkAdmin(adminId: string): Promise<boolean> {
+  async checkAdmin(adminId: string): Promise<Message> {
     const check = this.admin.some((a) => a.id === adminId);
-    return check;
+    if (check === true) {
+      return Success.create({
+        message: "Admin Authorized",
+        statusCode: 200
+      })
+    }
+    return Error.create({
+      message: "Unauthorized",
+      statusCode: 401
+    })
   }
 
   async acceptDistributor(distributorId: string) {
@@ -25,7 +36,7 @@ export class InMemoryAdminRepository implements AdminRepository {
     distributor
       ? (distributor.props.accepted = true)
       : () => {
-          throw new Error(`Distributor with ID ${distributorId} not found`);
+          // throw new Error(`Distributor with ID ${distributorId} not found`);
         };
   }
 
@@ -35,7 +46,7 @@ export class InMemoryAdminRepository implements AdminRepository {
     distributor
       ? (distributor.props.accepted = false)
       : () => {
-          throw new Error(`Distributor with ID ${distributorId} not found`);
+          // throw new Error(`Distributor with ID ${distributorId} not found`);
         };
   }
 }

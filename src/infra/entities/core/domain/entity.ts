@@ -1,22 +1,12 @@
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 export abstract class Entity<T> {
-  private _id: string;
+  public id: string; // Make id public to allow external access
 
-  constructor(props: T, id?: string){
+  constructor(props: T, id?: string) {
     this.props = props;
-    this.id = id ?? crypto.randomUUID();
+    this.id = id ?? crypto.randomUUID(); // Use the id directly
   }
 
-  protected get id(): string {
-    return this._id;
-  }
-  
-  protected set id(value: string) {
-    this._id = value;
-  }
-
-  public props: T;
-
-}  
-
+  public props: T; // Kept props public for access
+}

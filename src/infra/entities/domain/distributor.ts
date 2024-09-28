@@ -26,10 +26,6 @@ export class Distributor extends Entity<DistributorProps> {
       return distributor;
     }
 
-    public get id(): string {
-      return this.id;
-    }
-
     public get name(): string {
       return this.name
     }

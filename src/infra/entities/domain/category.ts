@@ -12,21 +12,14 @@ export class Category extends Entity<CategoryProps> {
   }
 
   static create(props: CategoryProps, id?: string) {
-    const category = new Category(props);
-
-    return category;
-  }
-
-  public get id(): string {
-    return this.id;
+    return new Category(props, id); // Pass id to the constructor
   }
 
   public get name(): string {
-    return this.name;
+    return this.props.name; // Access props to get the name
   }
 
-  public get products(): string[]{
-    return this.products;
+  public get products(): Product[] | undefined {
+    return this.props.products; // Access props to get the products
   }
-
 }
