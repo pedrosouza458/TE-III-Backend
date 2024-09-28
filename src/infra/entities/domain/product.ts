@@ -2,7 +2,8 @@ import { Entity } from "../core/domain/entity";
 import { Category } from "./category";
 
 type ProductProps = {
-  category: Category[],
+  categories: Category[],
+  brand: string,
   price: string,
   amount: number,
 }
@@ -19,7 +20,7 @@ export class Product extends Entity<ProductProps> {
   }
 
   public get id(): string {
-    return this._id;
+    return this.id;
   }
   
 }

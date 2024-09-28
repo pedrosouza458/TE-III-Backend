@@ -24,7 +24,7 @@ export class InMemoryAdminRepository implements AdminRepository {
         };
   }
 
-  async disacceptDistributor(distributorId: string){
+  async disacceptDistributor(distributorId: string) {
     const distributor = this.distributor.find((d) => d.id === distributorId);
 
     distributor
@@ -33,5 +33,4 @@ export class InMemoryAdminRepository implements AdminRepository {
           throw new Error(`Distributor with ID ${distributorId} not found`);
         };
   }
-
 }

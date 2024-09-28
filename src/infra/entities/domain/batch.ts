@@ -19,7 +19,7 @@ export class Batch extends Entity<BatchProps>{
   }
 
   public get id(): string {
-    return this._id;
+    return this.id;
   }
 
   public get title(): string{
