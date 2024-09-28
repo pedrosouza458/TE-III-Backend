@@ -6,7 +6,7 @@ import { Distributor } from "../../entities/domain/distributor";
 import { AdminRepository } from "../admin-repository";
 
 export class InMemoryAdminRepository implements AdminRepository {
-  
+
   public admin: Admin[] = [];
   public distributor: Distributor[] = [];
 
@@ -83,4 +83,5 @@ export class InMemoryAdminRepository implements AdminRepository {
       statusCode: 400,
     });
   }
+  
 }
