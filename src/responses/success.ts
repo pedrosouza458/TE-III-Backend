@@ -11,8 +11,7 @@ export class Success {
     this.statusCode = props.statusCode;
     this.message = props.message;
   }
-
-  // Factory method to create an instance of Success
+  
   public static create(props: SuccessProps): Success {
     return new Success(props);
   }
