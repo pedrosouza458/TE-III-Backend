@@ -1,6 +1,6 @@
 import { Entity } from "../core/domain/entity";
 
-type AdminProps = {
+export type AdminProps = {
   name: string,
   password: string,
 }

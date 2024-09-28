@@ -14,6 +14,11 @@ export class InMemoryAdminRepository implements AdminRepository {
     this.admin = this.admin.filter((a) => a.id !== adminId);
   }
 
+  async checkAdmin(adminId: string): Promise<boolean> {
+    const check = this.admin.some((a) => a.id === adminId);
+    return check;
+  }
+
   async acceptDistributor(distributorId: string) {
     const distributor = this.distributor.find((d) => d.id === distributorId);
 

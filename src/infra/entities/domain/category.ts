@@ -1,7 +1,7 @@
 import { Entity } from "../core/domain/entity";
 import { Product } from "./product";
 
-type CategoryProps = {
+export type CategoryProps = {
   name: string;
   products?: Product[];
 };
