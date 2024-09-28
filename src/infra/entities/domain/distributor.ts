@@ -5,6 +5,7 @@ import { Product } from "./product";
 
 type DistributorProps = {
   name: string,
+  brand: string,
   address: string,
   department: Category[],
   description: string,
@@ -24,5 +25,8 @@ export class Distributor extends Entity<DistributorProps> {
       const distributor = new Distributor(props);
 
       return distributor;
+    }
+    public get id(): string {
+      return this._id;
     }
 }

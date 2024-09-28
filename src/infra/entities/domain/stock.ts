@@ -16,6 +16,9 @@ export class Stock extends Entity<StockProps> {
    
     return stock;
   }
+  public get id(): string {
+    return this._id;
+  }
 }
 
 

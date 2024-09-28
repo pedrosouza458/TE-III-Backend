@@ -3,7 +3,7 @@ import { Product } from "./product"
 
 type CategoryProps = {
   name: string,
-  products?: Product[]
+  products?: Product[],
 }
 
 export class Category extends Entity<CategoryProps> {
@@ -15,5 +15,8 @@ export class Category extends Entity<CategoryProps> {
     const category = new Category(props);
 
     return category;
+  }
+  public get id(): string {
+    return this._id;
   }
 }

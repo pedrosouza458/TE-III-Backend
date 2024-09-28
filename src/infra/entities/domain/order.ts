@@ -20,4 +20,7 @@ export class Order extends Entity<OrderProps> {
 
     return order;
   }
+  public get id(): string {
+    return this._id;
+  }
 }

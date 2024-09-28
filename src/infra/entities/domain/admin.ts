@@ -15,4 +15,7 @@ export class Admin extends Entity<AdminProps> {
 
     return admin;
   }
+  public get id(): string {
+    return this._id;
+  }
 }

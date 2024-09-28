@@ -1,4 +1,4 @@
-import { Category } from "../../../entities/domain/category";
+import { Category } from "../../../../entities/domain/category";
 
 type CreateCategoryRequest = {
   name: string;
