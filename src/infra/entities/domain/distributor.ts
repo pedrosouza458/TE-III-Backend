@@ -26,7 +26,34 @@ export class Distributor extends Entity<DistributorProps> {
 
       return distributor;
     }
+
     public get id(): string {
       return this._id;
     }
+
+    public get name(): string {
+      return this.name
+    }
+
+    public get brand(): string {
+      return this.brand
+    }
+
+    public get address(): string {
+      return this.address
+    }
+
+    public get department(): string[] {
+      return this.department
+    }
+
+    public get description(): string {
+      return this.description
+    }
+
+    public get selled(): string {
+      return this.selled
+    }
+    
+
 }

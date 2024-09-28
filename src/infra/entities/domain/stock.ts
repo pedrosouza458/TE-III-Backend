@@ -16,9 +16,19 @@ export class Stock extends Entity<StockProps> {
    
     return stock;
   }
+
   public get id(): string {
     return this._id;
   }
+
+  public get products(): string[]{
+    return this.products;
+  }
+
+  public get total(): string {
+    return this.total
+  }
+
 }
 
 

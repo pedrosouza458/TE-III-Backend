@@ -17,7 +17,9 @@ export class Product extends Entity<ProductProps> {
 
     return product;
   }
+
   public get id(): string {
     return this._id;
   }
+  
 }
