@@ -4,15 +4,25 @@ import { Success } from "../../../responses/success";
 import { Admin } from "../../entities/domain/admin";
 import { Distributor } from "../../entities/domain/distributor";
 import { AdminRepository } from "../admin-repository";
+import bcrypt from "bcrypt";
 
 export class InMemoryAdminRepository implements AdminRepository {
-
   public admin: Admin[] = [];
   public distributor: Distributor[] = [];
 
   async createAdmin(admin: Admin): Promise<Message> {
     try {
-      this.admin.push(admin);
+      const saltRounds = 10;
+      let hashedpassword = await bcrypt.hash(admin.props.password, saltRounds);
+      const newAdminProps = {
+        ...admin.props,
+        password: hashedpassword,
+      };
+
+      const newAdmin = Admin.create(newAdminProps, admin.id);
+
+      this.admin.push(newAdmin);
+
       return Success.create({
         message: "Admin created",
         statusCode: 200,
@@ -24,6 +34,10 @@ export class InMemoryAdminRepository implements AdminRepository {
       });
     }
   }
+
+  async loginAdmin(adminName: string, adminPassword: string): Promise<void> {}
+  async logoutAdmin(): Promise<void> {};
+  async  updateAdmin(adminId: string, props: Admin): Promise<void> {};
 
   async deleteAdmin(adminId: string): Promise<Message> {
     try {
@@ -83,5 +97,4 @@ export class InMemoryAdminRepository implements AdminRepository {
       statusCode: 400,
     });
   }
-  
 }

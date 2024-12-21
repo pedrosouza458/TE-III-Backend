@@ -16,9 +16,29 @@ export class Order extends Entity<OrderProps> {
   }
 
   static create(props: OrderProps, id?: string){
-    const order = new Order(props);
+    const order = new Order(props, id);
 
     return order;
+  }
+
+  public get batches(): string[] {
+    return this.batches
+  }
+
+  public get total(): string {
+    return this.total
+  }
+
+  public get accepted(): boolean {
+    return this.accepted
+  }
+
+  public get delivered(): boolean {
+    return this.delivered
+  }
+
+  public get createdAt(): Date {
+    return this.createdAt
   }
   
 }

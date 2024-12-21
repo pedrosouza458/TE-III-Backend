@@ -7,8 +7,8 @@ export class CreateAdmin {
 
   async execute({ name, password }: AdminProps): Promise<Message> {
     const admin = Admin.create({ name, password });
-    
-   const response = await this.adminRepository.createAdmin(admin);
-   return response;
+
+    const response = await this.adminRepository.createAdmin(admin);
+    return response;
   }
 }

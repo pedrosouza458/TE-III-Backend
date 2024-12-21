@@ -13,7 +13,7 @@ export class Batch extends Entity<BatchProps>{
   }
 
   static create(props: BatchProps, id?: string){
-    const batch = new Batch(props);
+    const batch = new Batch(props, id);
 
     return batch;
   }
