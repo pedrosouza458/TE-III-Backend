@@ -1,5 +1,5 @@
-# A pasta Schema do src serve pra criar os schemas (tipagem) das entidades
-
+## Pasta Schema (src)
+### serve pra criar os schemas (tipagem) das entidades
 ## Exemplo:
 
 ```js

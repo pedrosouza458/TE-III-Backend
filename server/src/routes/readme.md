@@ -1,5 +1,5 @@
-# Pasta para rotas, cada uma contendo o Schema relacionado a sua rota
-
+# Pasta Routes
+### cada rota deve conter o Schema relacionado a sua rota
 ## Exemplo rota
 
 cada rota é um arquivo separado, que tem de ser uma função asíncrona com o parametro FastifyIstance
@@ -39,6 +39,7 @@ import z from "zod"
 
 export const TestRouteResponseSchema = {
   // Criei um objeto para conter mais de um tipo de resposta diferente
+  // Em exemplos mais complexos como envio de lista de produtos, o uso de tipos para rotas vai ser melhor aproveitado
 	success: z.object({ // o nome não importa pois no schema das rotas vai ter de ser escrito o status code relacionado ao schema
 		message: z.string(),
 	}),
