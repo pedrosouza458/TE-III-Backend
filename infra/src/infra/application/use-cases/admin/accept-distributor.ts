@@ -1,14 +1,14 @@
 import { Message } from "../../../../responses/response";
-import { AdminRepository } from "../../../repository/admin-repository";
+import { UserRepository } from "../../../repository/user-repository";
 
 export class AcceptDistributor {
-  constructor(private adminRepository: AdminRepository) {}
+  constructor(private userRepository: UserRepository) {}
 
   async execute(adminId: string, distributorId: string): Promise<Message> {
-    const checkAdmin = await this.adminRepository.checkAdmin(adminId);
+    const checkAdmin = await this.userRepository.checkAdmin(adminId);
 
     if (checkAdmin.statusCode === 200) {
-      const response = this.adminRepository.acceptDistributor(distributorId);
+      const response = this.userRepository.acceptDistributor(distributorId);
       return response;
     }
 

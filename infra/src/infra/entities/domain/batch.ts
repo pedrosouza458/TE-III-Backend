@@ -1,10 +1,15 @@
 import { Entity } from "../core/domain/entity"
+import { Order } from "./order"
 import { Product } from "./product"
 
 type BatchProps = {
   title: string,
   products: Product[],
-  total: number
+  orders?: Order[],
+  quantity: number,
+  total: number,
+  expire_date: Date,
+  manufactureDate: Date,
 }
 
 export class Batch extends Entity<BatchProps>{
