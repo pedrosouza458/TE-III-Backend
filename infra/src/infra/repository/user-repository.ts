@@ -9,5 +9,6 @@ export interface UserRepository {
   logoutUser(): Promise<void>;
   updateUser(userId: string, updatedProps: Partial<UserProps>): Promise<Message>
   deleteUser(userId: string): Promise<Message>;
-  checkAdmin(adminId: string): Promise<Message>,
+  checkAdmin(adminId: string): Promise<Message>;
+  switchingUserRole(userId: string): Promise<Message>
 }

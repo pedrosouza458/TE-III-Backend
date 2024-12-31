@@ -1,23 +1,26 @@
-import { Message } from "../../../../responses/response";
-import { User, UserProps } from "../../../entities/domain/user";
-import { UserRepository } from "../../../repository/user-repository";
+import { v4 as uuid } from 'uuid';  // Import uuid if it's not already
+import { User, UserProps } from '../../../entities/domain/user';
+import { UserRepository } from '../../../repository/user-repository';
+import { Message } from '../../../../responses/response';
 
 export class CreateUser {
-  constructor(private adminRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) {}
 
   async execute({ name, password, email, role }: UserProps): Promise<Message> {
+    const userId = uuid();  // Generate a unique ID for the user
+
     const user = User.create({
       name,
       password,
       email,
       role,
-      aprovedInDistributor: false,
+      approvedInDistributor: false,
       distributorId: null,
       orders: [],
-      aprovedOrders: [],
-    });
+      approvedOrders: [],
+    }, userId);  
 
-    const response = await this.adminRepository.createAdmin(user);
+    const response = await this.userRepository.createAdmin(user);
     return response;
   }
 }

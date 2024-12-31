@@ -10,7 +10,6 @@ export class InMemoryDistributorRepository implements DistributorRepository {
 
   async createDistributor(distributor: Partial<DistributorProps>): Promise<Message> {
     try {
-
       const distributorProps: DistributorProps = {
         name: distributor.name ?? "Unknown Distributor",
         address: distributor.address ?? "No Address Provided",
@@ -21,8 +20,14 @@ export class InMemoryDistributorRepository implements DistributorRepository {
         orders: [],
       };
 
+      if(!distributorProps){
+        return Error.create({
+          message: "Failed to create category",
+          statusCode: 422,
+        });
+      }
+
       const newDistributor = Distributor.create(distributorProps, uuid());
-  
       this.distributor.push(newDistributor);
   
       return Success.create({
@@ -31,7 +36,7 @@ export class InMemoryDistributorRepository implements DistributorRepository {
       });
     } catch (error) {
       return Error.create({
-        message: "Failed to create distributor",
+        message: "Internal server error",
         statusCode: 400,
       });
     }

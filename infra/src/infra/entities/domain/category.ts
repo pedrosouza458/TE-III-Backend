@@ -4,7 +4,7 @@ import { Product } from "./product";
 export type CategoryProps = {
   name: string;
   products: Product[] | [];
-};
+}
 
 export class Category extends Entity<CategoryProps> {
   private constructor(props: CategoryProps, id: string) {
