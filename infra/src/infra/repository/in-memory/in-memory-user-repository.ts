@@ -1,14 +1,35 @@
 import { Error } from "../../../responses/error";
 import { Message } from "../../../responses/response";
 import { Success } from "../../../responses/success";
-import { User } from "../../entities/domain/user";
-import { Distributor } from "../../entities/domain/distributor";
+import { User, UserProps } from "../../entities/domain/user";
 import { UserRepository } from "../user-repository";
 import bcrypt from "bcrypt";
 
 export class InMemoryUserRepository implements UserRepository {
   public user: User[] = [];
-  public distributor: Distributor[] = [];
+
+  async getUserById(userId: string): Promise<Partial<UserProps> | Message> {
+    try {
+      const user = this.user.find((c) => c.id === userId);
+
+      let userResult = {
+        name: user?.props.name,
+        email: user?.props.email,
+        password: user?.props.password,
+        role: user?.props.role,
+        aprovedInDistributor: user?.props.aprovedInDistributor,
+        distributorId: user?.props.distributorId,
+        orders: user?.props.orders,
+        aprovedOrders: user?.props.aprovedOrders,
+      };
+      return userResult;
+    } catch (error) {
+      return Error.create({
+        message: "Failed to create user",
+        statusCode: 400,
+      });
+    }
+  }
 
   async createUser(user: User): Promise<Message> {
     try {
@@ -64,7 +85,53 @@ export class InMemoryUserRepository implements UserRepository {
 
   async loginUser(userName: string, userPassword: string): Promise<void> {}
   async logoutUser(): Promise<void> {}
-  async updateUser(userId: string, props: User): Promise<void> {}
+
+  async updateUser(
+    userId: string,
+    updatedProps: Partial<UserProps>
+  ): Promise<Message> {
+    try {
+      // Find the user by ID
+      const userIndex = this.user.findIndex((u) => u.id === userId);
+      if (userIndex === -1) {
+        return Error.create({
+          message: "User not found",
+          statusCode: 404,
+        });
+      }
+
+      const existingUser = this.user[userIndex];
+
+      // Prevent role from being updated
+      if (updatedProps.role && updatedProps.role !== existingUser.props.role) {
+        return Error.create({
+          message: "Role cannot be updated",
+          statusCode: 403,
+        });
+      }
+
+      // Merge updated properties while maintaining the original role
+      const updatedUserProps: UserProps = {
+        ...existingUser.props,
+        ...updatedProps,
+        role: existingUser.props.role, // Ensure role is unchanged
+      };
+
+      // Create a new User instance with updated properties
+      const updatedUser = User.create(updatedUserProps, userId);
+      this.user[userIndex] = updatedUser;
+
+      return Success.create({
+        message: "User updated successfully",
+        statusCode: 200,
+      });
+    } catch (error) {
+      return Error.create({
+        message: "Failed to update user",
+        statusCode: 400,
+      });
+    }
+  }
 
   async deleteUser(userId: string): Promise<Message> {
     try {
@@ -95,33 +162,5 @@ export class InMemoryUserRepository implements UserRepository {
     });
   }
 
-  async acceptDistributor(distributorId: string): Promise<Message> {
-    const distributor = this.distributor.find((d) => d.id === distributorId);
-    if (distributor) {
-      distributor.props.accepted = true;
-      return Success.create({
-        message: "Distributor accpeted",
-        statusCode: 200,
-      });
-    }
-    return Error.create({
-      message: "Failed to accept distributor",
-      statusCode: 400,
-    });
-  }
-
-  async disacceptDistributor(distributorId: string): Promise<Message> {
-    const distributor = this.distributor.find((d) => d.id === distributorId);
-    if (distributor) {
-      distributor.props.accepted = false;
-      return Success.create({
-        message: "Distributor disaccepted",
-        statusCode: 200,
-      });
-    }
-    return Error.create({
-      message: "Failed to disaccepted distributor",
-      statusCode: 400,
-    });
-  }
+  // async switchingUserRole(userId): Promise<Message> {}
 }
