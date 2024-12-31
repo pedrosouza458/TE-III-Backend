@@ -85,7 +85,7 @@ export class InMemoryUserRepository implements UserRepository {
 
       if (!newAdminProps) {
         return Error.create({
-          message: "Failed to create admin",
+          message: "Failed to create user",
           statusCode: 422,
         });
       }

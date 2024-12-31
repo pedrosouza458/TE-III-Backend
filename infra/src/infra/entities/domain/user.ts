@@ -4,7 +4,7 @@ import { Order } from "./order";
 export type UserProps = {
   name: string;
   email: string;
-  password: string; 
+  password: string;
   role: string;
   approvedInDistributor: boolean;
   distributorId: string | null;
@@ -19,6 +19,12 @@ export class User extends Entity<UserProps> {
 
   static create(props: UserProps, id: string) {
     const product = new User(props, id);
+
+    // Default values for optional fields
+    props.orders = props.orders || [];
+    props.approvedInDistributor = props.approvedInDistributor ?? false;
+    props.approvedOrders = props.approvedOrders || [];
+    props.distributorId = props.distributorId ?? null;
 
     return product;
   }
