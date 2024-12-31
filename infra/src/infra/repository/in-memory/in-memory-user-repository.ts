@@ -4,6 +4,7 @@ import { Success } from "../../../responses/success";
 import { User, UserProps } from "../../entities/domain/user";
 import { UserRepository } from "../user-repository";
 import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 
 export class InMemoryUserRepository implements UserRepository {
   public user: User[] = [];
@@ -12,21 +13,27 @@ export class InMemoryUserRepository implements UserRepository {
     try {
       const user = this.user.find((c) => c.id === userId);
 
-      let userResult = {
-        name: user?.props.name,
-        email: user?.props.email,
-        password: user?.props.password,
-        role: user?.props.role,
-        aprovedInDistributor: user?.props.aprovedInDistributor,
-        distributorId: user?.props.distributorId,
-        orders: user?.props.orders,
-        aprovedOrders: user?.props.aprovedOrders,
+      if (!user) {
+        return Error.create({
+          message: "User not found",
+          statusCode: 404,
+        });
+      }
+
+      const userResult: Partial<UserProps> = {
+        name: user.name, // Using getters from User class
+        email: user.email,
+        role: user.role,
+        approvedInDistributor: user.approvedInDistributor,
+        orders: user.orders,
+        approvedOrders: user.approvedOrders,
       };
+
       return userResult;
     } catch (error) {
       return Error.create({
-        message: "Failed to create user",
-        statusCode: 400,
+        message: "Internal server error",
+        statusCode: 500,
       });
     }
   }
@@ -34,15 +41,22 @@ export class InMemoryUserRepository implements UserRepository {
   async createUser(user: User): Promise<Message> {
     try {
       const saltRounds = 10;
-      let hashedpassword = await bcrypt.hash(user.props.password, saltRounds);
-      const newUserProps = {
+      const hashedPassword = await bcrypt.hash(user.getPassword(), saltRounds);
+
+      const newUserProps: UserProps = {
         ...user.props,
         role: "User",
-        password: hashedpassword,
+        password: hashedPassword,
       };
 
-      const newUser = User.create(newUserProps, user.id);
+      if(!newUserProps){
+        return Error.create({
+          message: "Failed to create User",
+          statusCode: 400,
+        });
+      }
 
+      const newUser = User.create(newUserProps, uuid());
       this.user.push(newUser);
 
       return Success.create({
@@ -51,34 +65,41 @@ export class InMemoryUserRepository implements UserRepository {
       });
     } catch (error) {
       return Error.create({
-        message: "Failed to create user",
-        statusCode: 400,
+        message: "Internal Server error",
+        statusCode: 500,
       });
     }
   }
 
-  async createAdmin(admin: User): Promise<Message> {
+  async createAdmin(user: User): Promise<Message> {
     try {
       const saltRounds = 10;
-      let hashedpassword = await bcrypt.hash(admin.props.password, saltRounds);
-      const newAdminProps = {
-        ...admin.props,
+      const hashedPassword = await bcrypt.hash(user.getPassword(), saltRounds);
+  
+      const newAdminProps: UserProps = {
+        ...user.props,
         role: "Admin",
-        password: hashedpassword,
+        password: hashedPassword,
       };
 
-      const newAdmin = User.create(newAdminProps, admin.id);
-
-      this.user.push(newAdmin);
-
+      if(!newAdminProps){
+        return Error.create({
+          message: "Failed to create admin",
+          statusCode: 400,
+        });
+      }
+  
+      const newUser = User.create(newAdminProps, uuid());
+      this.user.push(newUser);
+  
       return Success.create({
         message: "Admin created",
         statusCode: 200,
       });
     } catch (error) {
       return Error.create({
-        message: "Failed to create admin",
-        statusCode: 400,
+        message: "Internal server error",
+        statusCode: 500,
       });
     }
   }
@@ -102,7 +123,6 @@ export class InMemoryUserRepository implements UserRepository {
 
       const existingUser = this.user[userIndex];
 
-      // Prevent role from being updated
       if (updatedProps.role && updatedProps.role !== existingUser.props.role) {
         return Error.create({
           message: "Role cannot be updated",
@@ -110,14 +130,12 @@ export class InMemoryUserRepository implements UserRepository {
         });
       }
 
-      // Merge updated properties while maintaining the original role
       const updatedUserProps: UserProps = {
         ...existingUser.props,
         ...updatedProps,
-        role: existingUser.props.role, // Ensure role is unchanged
+        role: existingUser.props.role, 
       };
 
-      // Create a new User instance with updated properties
       const updatedUser = User.create(updatedUserProps, userId);
       this.user[userIndex] = updatedUser;
 
@@ -127,8 +145,8 @@ export class InMemoryUserRepository implements UserRepository {
       });
     } catch (error) {
       return Error.create({
-        message: "Failed to update user",
-        statusCode: 400,
+        message: "Internal server error",
+        statusCode: 500,
       });
     }
   }
@@ -137,13 +155,13 @@ export class InMemoryUserRepository implements UserRepository {
     try {
       this.user = this.user.filter((a) => a.id !== userId);
       return Success.create({
-        message: "Admin deleted",
+        message: "User deleted",
         statusCode: 200,
       });
     } catch (error) {
       return Error.create({
-        message: "Failed to delete admin",
-        statusCode: 200,
+        message: "Failed to delete user",
+        statusCode: 500,
       });
     }
   }
@@ -157,8 +175,8 @@ export class InMemoryUserRepository implements UserRepository {
       });
     }
     return Error.create({
-      message: "Unauthorized",
-      statusCode: 401,
+      message: "Internal server error",
+      statusCode: 500,
     });
   }
 

@@ -4,48 +4,50 @@ import { Order } from "./order";
 export type UserProps = {
   name: string;
   email: string;
-  password: string;
+  password: string; 
   role: string;
-  aprovedInDistributor: boolean;
+  approvedInDistributor: boolean;
   distributorId: string | null;
   orders: Order[];
-  aprovedOrders: Order[];
+  approvedOrders: Order[];
 };
 
 export class User extends Entity<UserProps> {
-  private constructor(props: UserProps, id?: string) {
+  private constructor(props: UserProps, id: string) {
     super(props, id);
   }
 
-  static create(props: UserProps, id?: string) {
+  static create(props: UserProps, id: string) {
     const product = new User(props, id);
 
     return product;
   }
 
-  public get name(): string[] {
-    return this.name;
+  public get name(): string {
+    return this.props.name;
   }
 
   public get email(): string {
-    return this.email;
+    return this.props.email;
   }
 
-  // no get password
+  public getPassword(): string {
+    return this.props.password;
+  }
 
   public get role(): string {
-    return this.role;
+    return this.props.role;
   }
 
   public get approvedInDistributor(): boolean {
-    return this.approvedInDistributor;
+    return this.props.approvedInDistributor;
   }
 
   public get orders(): Order[] {
-    return this.orders;
+    return this.props.orders;
   }
 
   public get approvedOrders(): Order[] {
-    return this.approvedOrders;
+    return this.props.approvedOrders;
   }
 }

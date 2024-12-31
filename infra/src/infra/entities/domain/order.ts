@@ -16,34 +16,34 @@ type OrderProps = {
 }
 
 export class Order extends Entity<OrderProps> {
-  private constructor(props: OrderProps, id?: string){
+  private constructor(props: OrderProps, id: string){
     super(props, id);
   }
 
-  static create(props: OrderProps, id?: string){
+  static create(props: OrderProps, id: string){
     const order = new Order(props, id);
 
     return order;
   }
 
-  public get batches(): string[] {
-    return this.batches
+  public get batches(): Batch[] {
+    return this.props.batches
   }
 
   public get total(): string {
-    return this.total
+    return this.props.total
   }
 
   public get accepted(): boolean {
-    return this.accepted
+    return this.props.accepted
   }
 
   public get delivered(): boolean {
-    return this.delivered
+    return this.props.delivered
   }
 
   public get createdAt(): Date {
-    return this.createdAt
+    return this.props.createdAt
   }
   
 }
