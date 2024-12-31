@@ -1,5 +1,5 @@
-import { Message } from "../../../../responses/response";
-import { UserRepository } from "../../../repository/user-repository";
+import { Message } from "../../../../../responses/response";
+import { UserRepository } from "../../../../repository/user-repository";
 
 export class AcceptDistributor {
   constructor(private userRepository: UserRepository) {}

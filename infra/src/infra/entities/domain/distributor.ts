@@ -17,7 +17,6 @@ type DistributorProps = {
   department: Category[];
   description: string;
   selledProducts: number;
-  distributionDiscount: number;
   accepted: boolean;
   products: Product[];
   orders: Order[];

@@ -7,7 +7,7 @@ export type UserProps = {
   password: string;
   role: string;
   aprovedInDistributor: boolean;
-  distributorId: string;
+  distributorId: string | null;
   orders: Order[];
   aprovedOrders: Order[];
 };
