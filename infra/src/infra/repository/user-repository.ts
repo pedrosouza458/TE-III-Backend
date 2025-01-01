@@ -2,7 +2,7 @@ import { Message } from "../../responses/response";
 import { User, UserProps } from "../entities/domain/user";
 
 export interface UserRepository {
-  getUserById(userId: string): Promise<Partial<UserProps> | Message>
+  getUserById(userId: string): Promise<Partial<UserProps & { id: string }> | Message>
   createUser(user: User): Promise<Message>
   createAdmin(admin: User): Promise<Message>;
   loginUser(userName: string, userPassword: string): Promise<void>;

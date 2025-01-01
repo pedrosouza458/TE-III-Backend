@@ -29,6 +29,13 @@ export class User extends Entity<UserProps> {
     return product;
   }
 
+  toPlainObject() {
+    return {
+      id: this.id,
+      ...this.props,
+    };
+  }
+
   public get name(): string {
     return this.props.name;
   }

@@ -9,26 +9,27 @@ import { v4 as uuid } from "uuid";
 export class InMemoryUserRepository implements UserRepository {
   public user: User[] = [];
 
-  async getUserById(userId: string): Promise<Partial<UserProps> | Message> {
+  async getUserById(userId: string): Promise<Partial<UserProps & { id: string }> | Message> {
     try {
       const user = this.user.find((c) => c.id === userId);
-
+  
       if (!user) {
         return Error.create({
           message: "User not found",
           statusCode: 404,
         });
       }
-
-      const userResult: Partial<UserProps> = {
-        name: user.name, 
+  
+      const userResult: Partial<UserProps & { id: string }> = {
+        id: user.id, 
+        name: user.name,
         email: user.email,
         role: user.role,
         approvedInDistributor: user.approvedInDistributor,
         orders: user.orders,
         approvedOrders: user.approvedOrders,
       };
-
+  
       return userResult;
     } catch (error) {
       return Error.create({
@@ -37,7 +38,7 @@ export class InMemoryUserRepository implements UserRepository {
       });
     }
   }
-
+  
   async createUser(user: User): Promise<Message> {
     try {
       const saltRounds = 10;
@@ -62,6 +63,7 @@ export class InMemoryUserRepository implements UserRepository {
 
       return Success.create({
         message: "User created",
+        data: newUser.id,
         statusCode: 200,
       });
     } catch (error) {
@@ -85,7 +87,7 @@ export class InMemoryUserRepository implements UserRepository {
 
       if (!newAdminProps) {
         return Error.create({
-          message: "Failed to create user",
+          message: "Failed to create admin",
           statusCode: 422,
         });
       }
@@ -96,6 +98,7 @@ export class InMemoryUserRepository implements UserRepository {
 
       return Success.create({
         message: "Admin created",
+        data: newUser.id,
         statusCode: 200,
       });
     } catch (error) {
