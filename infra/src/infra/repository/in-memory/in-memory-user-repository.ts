@@ -9,19 +9,21 @@ import { v4 as uuid } from "uuid";
 export class InMemoryUserRepository implements UserRepository {
   public user: User[] = [];
 
-  async getUserById(userId: string): Promise<Partial<UserProps & { id: string }> | Message> {
+  async getUserById(
+    userId: string
+  ): Promise<Partial<UserProps & { id: string }> | Message> {
     try {
       const user = this.user.find((c) => c.id === userId);
-  
+
       if (!user) {
         return Error.create({
           message: "User not found",
           statusCode: 404,
         });
       }
-  
+
       const userResult: Partial<UserProps & { id: string }> = {
-        id: user.id, 
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -29,7 +31,7 @@ export class InMemoryUserRepository implements UserRepository {
         orders: user.orders,
         approvedOrders: user.approvedOrders,
       };
-  
+
       return userResult;
     } catch (error) {
       return Error.create({
@@ -38,24 +40,31 @@ export class InMemoryUserRepository implements UserRepository {
       });
     }
   }
-  
+
   async createUser(user: User): Promise<Message> {
     try {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(user.getPassword(), saltRounds);
+
+      if (!user.props.email.includes("@")) {
+        return Error.create({
+          message: "Invalid email format",
+          statusCode: 422,
+        });
+      }
+
+      if (!user.name || !user.email || !user.props.password || !user.role) {
+        return Error.create({
+          message: "Failed to create admin",
+          statusCode: 422,
+        });
+      }
 
       const newUserProps: UserProps = {
         ...user.props,
         role: "User",
         password: hashedPassword,
       };
-
-      if (!newUserProps) {
-        return Error.create({
-          message: "Failed to create User",
-          statusCode: 422,
-        });
-      }
 
       const newUser = User.create(newUserProps, uuid());
 
@@ -79,18 +88,18 @@ export class InMemoryUserRepository implements UserRepository {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(user.getPassword(), saltRounds);
 
-      const newAdminProps: UserProps = {
-        ...user.props,
-        role: "Admin",
-        password: hashedPassword,
-      };
-
-      if (!newAdminProps) {
+      if (!user.name || !user.email || !user.props.password || !user.role) {
         return Error.create({
           message: "Failed to create admin",
           statusCode: 422,
         });
       }
+
+      const newAdminProps: UserProps = {
+        ...user.props,
+        role: "Admin",
+        password: hashedPassword,
+      };
 
       const newUser = User.create(newAdminProps, uuid());
 

@@ -20,19 +20,30 @@ export class User extends Entity<UserProps> {
   static create(props: UserProps, id: string) {
     const product = new User(props, id);
 
-    // Default values for optional fields
+    if (!props.name || !props.email || !props.password) {
+      throw new Error("Name, email and password are required");
+    }
+
+    if(!props.role){
+      props.role = "User"
+    }
+
     props.orders = props.orders || [];
     props.approvedInDistributor = props.approvedInDistributor ?? false;
     props.approvedOrders = props.approvedOrders || [];
     props.distributorId = props.distributorId ?? null;
 
+    if (!props.email.includes("@")) {
+      throw new Error("Invalid email format")
+    }
+    
     return product;
   }
 
   toPlainObject() {
     return {
+      ...this.props, 
       id: this.id,
-      ...this.props,
     };
   }
 

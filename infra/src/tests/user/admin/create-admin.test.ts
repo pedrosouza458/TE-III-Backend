@@ -30,21 +30,5 @@ describe('Create admin use-case', () => {
     expect(mockUserRepository.createAdmin).toHaveBeenCalledWith(expect.any(Object)); // Check if createAdmin was called
   });
 
-
-  it('should not be able to create a user and error message', async () => {
-    // using any to force fail
-    const userProps: Partial<any> = {
-      test: "testing",
-      password: 'password123',
-      email: 'john.doe@example.com',
-      role: 'Admin',
-    };
-
-    // Execute the method
-    const response = await createAdmin.execute(userProps);
-
-    expect(response).toEqual({ message: 'Failed to create admin', statusCode: 422 });
-    expect(mockUserRepository.createAdmin).toHaveBeenCalledWith(expect.any(Object)); // Check if createAdmin was called
-  });
-
+  // all user error checks are equal in admin, so i just create the create-admin method in test.
 });
