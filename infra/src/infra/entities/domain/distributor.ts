@@ -1,16 +1,10 @@
 import { Entity } from "../core/domain/entity";
 import { Order } from "./order";
 
-enum status {
-  REJECTED,
-  PENDING,
-  APROVED,
-}
-
 export type DistributorProps = {
   name: string;
   address: string;
-  stockId: string | null;
+  stockId?: string;
   description: string;
   selledProducts: number;
   accepted: boolean;
@@ -24,6 +18,15 @@ export class Distributor extends Entity<DistributorProps> {
 
   static create(props: DistributorProps, id: string) {
     const distributor = new Distributor(props, id);
+
+    if(!props.name || !props.address){
+      throw new Error("Name and address are required")
+    }
+
+    props.orders = [];
+    props.stockId = null;
+    props.accepted = false;
+    props.selledProducts = 0;
 
     return distributor;
   }

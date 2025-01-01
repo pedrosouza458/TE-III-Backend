@@ -8,26 +8,10 @@ import { v4 as uuid } from 'uuid';
 export class InMemoryDistributorRepository implements DistributorRepository {
   public distributor: Distributor[] = [];
 
-  async createDistributor(distributor: Partial<DistributorProps>): Promise<Message> {
+  async createDistributor(distributor: Distributor): Promise<Message> {
     try {
-      const distributorProps: DistributorProps = {
-        name: distributor.name ?? "Unknown Distributor",
-        address: distributor.address ?? "No Address Provided",
-        stockId: null,
-        description: distributor.description ?? "No Description Provided",
-        selledProducts: 0,
-        accepted: false,
-        orders: [],
-      };
 
-      if(!distributorProps){
-        return Error.create({
-          message: "Failed to create category",
-          statusCode: 422,
-        });
-      }
-
-      const newDistributor = Distributor.create(distributorProps, uuid());
+      const newDistributor = Distributor.create(distributor, uuid());
       this.distributor.push(newDistributor);
   
       return Success.create({
@@ -42,7 +26,6 @@ export class InMemoryDistributorRepository implements DistributorRepository {
     }
   }
   
-
   async acceptDistributor(distributorId: string): Promise<Message> {
     const distributor = this.distributor.find((d) => d.id === distributorId);
     if (distributor) {

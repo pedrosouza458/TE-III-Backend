@@ -7,7 +7,7 @@ jest.mock("../../infra/repository/user-repository");
 describe("Create user use-case", () => {
   let createUser: CreateUser;
   let mockUserRepository: UserRepository;
-  let createdUserId: string;
+  let userId: string;
 
   beforeEach(async () => {
     mockUserRepository = {
@@ -17,19 +17,34 @@ describe("Create user use-case", () => {
         data: "123e4567-e89b-12d3-a456-426614174000",
       }),
     } as unknown as UserRepository;
-
     createUser = new CreateUser(mockUserRepository);
+  });
 
-    // Run the createUser method and store the created user ID
+  it("should create a user and return a success message", async () => {
     const userProps: Partial<UserProps> = {
       name: "John Doe",
       password: "password123",
       email: "john.doe@example.com",
+      role: "Admin",
     };
 
+    // Execute the method
     const response = await createUser.execute(userProps);
-    createdUserId = response.data;
+
+    const userId = response.data;
+
+    expect(response).toEqual({
+      message: "User created",
+      data: userId,
+      statusCode: 200,
+    });
+
+    expect(mockUserRepository.createUser).toHaveBeenCalledWith(
+      expect.any(Object)
+    ); 
   });
+
+  // all user error checks are equal in admin, so i just create the create-admin method in test.
 
   it("should fail when email does not contain '@'", async () => {
     const userProps: Partial<UserProps> = {
@@ -37,7 +52,7 @@ describe("Create user use-case", () => {
       email: "johndoedomain.com", // Invalid email
       password: "password123",
     };
-  
+
     await expect(createUser.execute(userProps)).rejects.toThrow(
       "Invalid email format"
     );
@@ -50,7 +65,7 @@ describe("Create user use-case", () => {
       password: "password123",
       role: "User",
     };
-  
+
     await expect(createUser.execute(userProps)).rejects.toThrow(
       "Name, email and password are required"
     );

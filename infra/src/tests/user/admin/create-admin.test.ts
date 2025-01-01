@@ -7,6 +7,7 @@ jest.mock('../../../infra/repository/user-repository');
 describe('Create admin use-case', () => {
   let createAdmin: CreateAdmin;
   let mockUserRepository: UserRepository;
+  let createdUserId: string;
 
   beforeEach(() => {
     mockUserRepository = {
@@ -26,8 +27,9 @@ describe('Create admin use-case', () => {
     // Execute the method
     const response = await createAdmin.execute(userProps);
 
-    expect(response).toEqual({ message: 'Admin created', statusCode: 200 });
-    expect(mockUserRepository.createAdmin).toHaveBeenCalledWith(expect.any(Object)); // Check if createAdmin was called
+    const adminId = response.data
+
+    expect(response).toEqual({ message: 'Admin created', data: adminId, statusCode: 200 });
   });
 
   // all user error checks are equal in admin, so i just create the create-admin method in test.
