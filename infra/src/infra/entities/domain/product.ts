@@ -5,44 +5,39 @@ type ProductProps = {
   categories: Category[];
   name: string;
   description: string;
-  brand: string;
   price: string;
   amount: number;
 };
 
 export class Product extends Entity<ProductProps> {
-  private constructor(props: ProductProps, id?: string) {
+  private constructor(props: ProductProps, id: string) {
     super(props, id);
   }
 
-  static create(props: ProductProps, id?: string) {
+  static create(props: ProductProps, id: string) {
     const product = new Product(props, id);
 
     return product;
   }
 
-  public get categories(): string[] {
-    return this.categories;
+  public get categories(): Category[] {
+    return this.props.categories;
   }
 
   public get name(): string {
-    return this.name;
+    return this.props.name;
   }
 
   public get description(): string {
-    return this.description
-  }
-
-  public get brand(): string {
-    return this.brand
+    return this.props.description
   }
 
   public get price(): string {
-    return this.price
+    return this.props.price
   }
 
-  public get amount(): string {
-    return this.amount
+  public get amount(): number {
+    return this.props.amount
   }
 
 }

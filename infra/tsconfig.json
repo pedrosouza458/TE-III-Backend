@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",           // Target modern JavaScript (ES2020 or later)
+    "module": "ESNext",           // Use ES modules
+    "moduleResolution": "node",   // Resolve modules like Node.js
+    "esModuleInterop": true,      // Enable interoperability with CommonJS modules
+  },
+  "include": [
+    "src/**/*.ts",                // Include TypeScript files in the src directory
+    "tests/**/*.ts"               // Include test files
+  ]
+}

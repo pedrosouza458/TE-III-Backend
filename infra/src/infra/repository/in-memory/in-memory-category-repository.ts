@@ -1,12 +1,12 @@
 import { Error } from "../../../responses/error";
 import { Message } from "../../../responses/response";
 import { Success } from "../../../responses/success";
-import { Admin } from "../../entities/domain/admin";
+import { User } from "../../entities/domain/user";
 import { Category } from "../../entities/domain/category";
 import { CategoryRepository } from "../category-repository";
 
 export class InMemoryCategoryRepository implements CategoryRepository {
-  public admin: Admin[] = [];
+  public admin: User[] = [];
   public category: Category[] = [];
 
   async createCategory(category: Category): Promise<Message> {

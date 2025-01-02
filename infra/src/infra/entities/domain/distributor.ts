@@ -1,75 +1,57 @@
 import { Entity } from "../core/domain/entity";
-import { Category } from "./category";
 import { Order } from "./order";
-import { Product } from "./product";
 
-type DistributorProps = {
-  name: string,
-  address: string,
-  department: Category[],
-  description: string,
-  selledProducts: number,
-  distributionDiscount: number,
-  accepted: boolean,
-  products: Product[],
-  orders: Order[],
-}
+export type DistributorProps = {
+  name: string;
+  address: string;
+  stockId?: string;
+  description: string;
+  selledProducts: number;
+  accepted: boolean;
+  orders: Order[] | [];
+};
 
 export class Distributor extends Entity<DistributorProps> {
-    private constructor(props: DistributorProps, id?: string){
-      super(props, id);
+  private constructor(props: DistributorProps, id: string) {
+    super(props, id);
+  }
+
+  static create(props: DistributorProps, id: string) {
+    const distributor = new Distributor(props, id);
+
+    if(!props.name || !props.address){
+      throw new Error("Name and address are required")
     }
 
-    static create(props: DistributorProps, id?: string){
-      const distributor = new Distributor(props, id);
+    props.orders = [];
+    props.stockId = null;
+    props.accepted = false;
+    props.selledProducts = 0;
 
-      return distributor;
-    }
+    return distributor;
+  }
 
-    public get name(): string {
-      return this.name
-    }
+  public get name(): string {
+    return this.props.name;
+  }
 
-    public get description(): string {
-      return this.description
-    }
+  public get description(): string {
+    return this.props.description;
+  }
 
-    public get brand(): string {
-      return this.brand
-    }
+  public get address(): string {
+    return this.props.address;
+  }
 
-    public get address(): string {
-      return this.address
-    }
+  public get selledProducts(): number {
+    return this.props.selledProducts;
+  }
 
-    public get department(): string[] {
-      return this.department
-    }
+  public get accepted(): boolean {
+    return this.props.accepted;
+  }
 
-    public get selledProducts(): number {
-      return this.selledProducts
-    }
-
-    public get selled(): number {
-      return this.selled
-    }
-    
-    public get distributionDiscount(): number {
-      return this.distributionDiscount
-    }
-
-    public get accepted(): boolean {
-      return this.accepted
-    }
-
-    public get products(): string[] {
-      return this.products
-    }
-
-    public get orders(): string[] {
-      return this.orders
-    }
-
-
-
+  public get orders(): Order[] {
+    return this.props.orders;
+  }
 }

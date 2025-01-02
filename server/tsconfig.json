@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_version": "20.1.0",
+  "compilerOptions": {
+    "lib": [
+      "es2023"
+    ],
+    "module": "node16",
+    "target": "es2022",
+    "baseUrl": ".", // This sets the base directory for non-relative module names.
+    "paths": {
+      "@/schemas/*": [
+        "src/schemas/*"
+      ],
+      "@/schemas/routes*": [
+        "src/routes/schemas*"
+      ],
+      "@/routes*": [
+        "src/routes*"
+      ],
+      "@/lib*": [
+        "src/lib*"
+      ]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node16"
+  }
+}

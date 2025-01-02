@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id                   String       @id @default(uuid())
+  name                 String
+  email                String       @unique
+  password             String
+  role                 String?      @default("User")
+  aprovedInDistributor Boolean      @default(false)
+  distributor          distributor? @relation(fields: [distributorId], references: [id])
+  distributorId        String?
+  orders               order[]      @relation("UserOrders")
+  approvedOrders       order[]      @relation("AdminApprovals")
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt()
+}
+
+model distributor {
+  id             String   @id @default(uuid())
+  name           String
+  address        String
+  status         String   @default("PENDING")
+  stock          stock?   @relation(fields: [stockId], references: [id])
+  stockId        String?
+  selledProducts Int      @default(0)
+  users          user[]
+  orders         order[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt()
+}
+
+model order {
+  id                String       @id @default(uuid())
+  name              String
+  address           String
+  user              user?        @relation("UserOrders", fields: [userId], references: [id])
+  userId            String?
+  distributor       distributor? @relation(fields: [distributorId], references: [id])
+  distributorId     String?
+  approvedByAdmin   user?        @relation("AdminApprovals", fields: [approvedByAdminId], references: [id])
+  approvedByAdminId String?
+  batches           batch[]      @relation("OrderBatches")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt()
+}
+
+model batch {
+  id              String    @id @default(uuid())
+  quantity        Int
+  total           Int
+  products        product[] @relation("BatchProducts")
+  manufactureDate DateTime  @default(now())
+  expireDate      DateTime?
+  orders          order[]   @relation("OrderBatches")
+}
+
+model product {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal
+  categories  category[] @relation("ProductCategories")
+  batches     batch[]    @relation("BatchProducts")
+  stock       stock?     @relation(fields: [stockId], references: [id])
+  stockId     String?
+}
+
+model category {
+  id       String    @id @default(uuid())
+  name     String
+  products product[] @relation("ProductCategories")
+}
+
+model stock {
+  id          String        @id @default(uuid())
+  quantity    Int
+  products    product[]
+  distributor distributor[]
+  lastUpdated DateTime      @updatedAt()
+}
