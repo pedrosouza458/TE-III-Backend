@@ -7,8 +7,6 @@ import {
   DistributorProps,
 } from "../../infra/entities/domain/distributor";
 
-jest.mock("../../infra/repository/user-repository");
-
 describe("Create distributor use-case", () => {
   let createDistributor: CreateDistributor;
   let mockDistributorRepository: DistributorRepository;

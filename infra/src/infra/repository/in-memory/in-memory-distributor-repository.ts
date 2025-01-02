@@ -31,7 +31,7 @@ export class InMemoryDistributorRepository implements DistributorRepository {
     if (distributor) {
       distributor.props.accepted = true;
       return Success.create({
-        message: "Distributor accpeted",
+        message: "Distributor accepted",
         statusCode: 200,
       });
     }

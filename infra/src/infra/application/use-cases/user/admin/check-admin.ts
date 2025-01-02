@@ -6,8 +6,8 @@ import { Message } from "../../../../../responses/response";
 export class CheckAdmin {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(userId: string): Promise<Message> {
-    const response = await this.userRepository.checkAdmin(userId);
+  async execute(adminId: string): Promise<Message> {
+    const response = await this.userRepository.checkAdmin(adminId);
     return response;
   }
 }

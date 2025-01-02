@@ -6,8 +6,6 @@ import { Message } from '../../responses/response';
 import { v4 as uuid } from 'uuid';
 import { Error } from '../../responses/error';
 
-jest.mock('../../infra/repository/user-repository');
-
 describe('GetUserById use case', () => {
   let createUser: CreateUser;
   let getUserById: GetUserById;

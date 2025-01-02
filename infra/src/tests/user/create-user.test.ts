@@ -2,8 +2,6 @@ import { CreateUser } from "../../infra/application/use-cases/user/create-user";
 import { UserRepository } from "../../infra/repository/user-repository";
 import { UserProps } from "../../infra/entities/domain/user";
 
-jest.mock("../../infra/repository/user-repository");
-
 describe("Create user use-case", () => {
   let createUser: CreateUser;
   let mockUserRepository: UserRepository;
