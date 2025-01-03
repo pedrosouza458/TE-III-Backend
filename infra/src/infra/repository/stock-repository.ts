@@ -4,7 +4,7 @@ import { Stock } from "../entities/domain/stock";
 
 export interface StockRepository {
   checkStock(stock: Stock): Promise<Message>
-  getStockById(stockId: string): Promise<void>
-  deleteStock(stockId: string): Promise<void>
-  updateStock(stockId: string, products: Product[]): Promise<void>
+  getStockById(stockId: string): Promise<Message>
+  deleteStock(stockId: string): Promise<Message>
+  updateStock(stockId: string, products: Product[]): Promise<Message>
 }
