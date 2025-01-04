@@ -5,7 +5,7 @@ export interface UserRepository {
   getUserById(userId: string): Promise<Partial<UserProps & { id: string }> | Message>
   createUser(user: User): Promise<Message>
   createAdmin(admin: User): Promise<Message>;
-  loginUser(userName: string, userPassword: string): Promise<void>;
+  loginUser(userName: string, userPassword: string): Promise<Message>;
   logoutUser(): Promise<void>;
   updateUser(userId: string, updatedProps: Partial<UserProps>): Promise<Message>
   deleteUser(userId: string): Promise<Message>;
