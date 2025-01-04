@@ -29,23 +29,23 @@ model user {
 }
 
 model distributor {
-  id        String   @id @default(uuid())
-  name      String
-  address   String
-  status    String   @default("pending")
-  stock     stock?   @relation(fields: [stockId], references: [id])
-  stockId   String?
-  users     user[]
-  orders    order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  id             String   @id @default(uuid())
+  name           String
+  address        String
+  status         String   @default("PENDING")
+  stock          stock?   @relation(fields: [stockId], references: [id])
+  stockId        String?
+  selledProducts Int      @default(0)
+  users          user[]
+  orders         order[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt()
 }
 
 model order {
   id                String       @id @default(uuid())
   name              String
   address           String
-  status            String       @default("Pending")
   user              user?        @relation("UserOrders", fields: [userId], references: [id])
   userId            String?
   distributor       distributor? @relation(fields: [distributorId], references: [id])
@@ -60,11 +60,11 @@ model order {
 model batch {
   id              String    @id @default(uuid())
   quantity        Int
-  order           order?    @relation("OrderBatches", fields: [orderId], references: [id])
-  orderId         String?
+  total           Int
   products        product[] @relation("BatchProducts")
   manufactureDate DateTime  @default(now())
-  expire_date     DateTime?
+  expireDate      DateTime?
+  orders          order[]   @relation("OrderBatches")
 }
 
 model product {

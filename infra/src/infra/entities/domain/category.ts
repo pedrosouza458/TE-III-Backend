@@ -3,23 +3,23 @@ import { Product } from "./product";
 
 export type CategoryProps = {
   name: string;
-  products?: Product[];
-};
+  products: Product[] | [];
+}
 
 export class Category extends Entity<CategoryProps> {
-  private constructor(props: CategoryProps, id?: string) {
+  private constructor(props: CategoryProps, id: string) {
     super(props, id);
   }
 
-  static create(props: CategoryProps, id?: string) {
-    return new Category(props, id); 
+  static create(props: CategoryProps, id: string) {
+    return new Category(props, id);
   }
 
   public get name(): string {
-    return this.props.name; 
+    return this.props.name;
   }
 
-  public get products(): Product[] | undefined {
-    return this.props.products; 
+  public get products(): Product[] {
+    return this.props.products;
   }
 }

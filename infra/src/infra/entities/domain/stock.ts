@@ -7,22 +7,22 @@ type StockProps = {
 }
 
 export class Stock extends Entity<StockProps> {
-  private constructor(props: StockProps, id?: string){
+  private constructor(props: StockProps, id: string){
     super(props, id);
   }
 
-  static create(props: StockProps, id?: string){
+  static create(props: StockProps, id: string){
     const stock = new Stock(props, id);
    
     return stock;
   }
   
-  public get products(): string[]{
-    return this.products;
+  public get products(): Product[]{
+    return this.props.products;
   }
 
-  public get total(): string {
-    return this.total
+  public get total(): number {
+    return this.props.total
   }
 
 }
