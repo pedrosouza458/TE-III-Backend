@@ -10,30 +10,47 @@ export class InMemoryCategoryRepository implements CategoryRepository {
   public category: Category[] = [];
 
   async createCategory(category: Category): Promise<Message> {
-    if(category){
-      this.category.push(category)
-      return Success.create({
-        message: "Category created",
-        statusCode: 201
-      })
+    try {
+      if (category) {
+        this.category.push(category);
+        return Success.create({
+          message: "Category created",
+          statusCode: 201,
+        });
+      }
+    } catch (error) {
+      return Error.create({
+        message: "Internal server error",
+        statusCode: 500,
+      });
     }
-    return Error.create({
-      message: "Failed to create category",
-      statusCode: 422
-    })
   }
 
-  async getCategory(categoryName?: string): Promise<Category[]> {
-    if (categoryName) {
-      const categories = this.category.filter((c) => c.name === categoryName);
-      return categories;
+  async getCategory(categoryName?: string): Promise<Category[] | Message> {
+    try {
+      if (categoryName) {
+        const categories = this.category.filter((c) => c.name === categoryName);
+        return categories;
+      }
+      return this.category;
+    } catch (error) {
+      return Error.create({
+        message: "Internal server error",
+        statusCode: 500,
+      });
     }
-    return this.category;
   }
-  
-  async getAllCategories(): Promise<Category[]> {
-    const categories = this.category;
-    return categories;
+
+  async getAllCategories(): Promise<Category[] | Message> {
+    try {
+      const categories = this.category;
+      return categories;
+    } catch (error) {
+      return Error.create({
+        message: "Internal server error",
+        statusCode: 500,
+      });
+    }
   }
 
   async updateCategory(

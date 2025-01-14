@@ -3,8 +3,8 @@ import { Message } from "../../responses/response";
 
 export interface CategoryRepository {
   createCategory(category: Category): Promise<Message>
-  getCategory(categoryName: string): Promise<Category[]>
-  getAllCategories(): Promise<Category[]>
-  updateCategory(adminId: string, categoryId: string, props: string[]): Promise<void>
-  deleteCategory(adminId: string, categoryId: string): Promise<void>
+  getCategory(categoryName: string): Promise<Category[] | Message>
+  getAllCategories(): Promise<Category[] | Message>
+  updateCategory(adminId: string, categoryId: string, props: string[]): Promise<Message>
+  deleteCategory(adminId: string, categoryId: string): Promise<Message>
 }
