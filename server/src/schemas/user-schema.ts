@@ -10,7 +10,7 @@ export const userSchema = z.object({
   name: z.string(),
   email: z.string(),
   password: z.string(),
-  role: z.enum(Object.values(Role) as [Role, ...Role[]]), // Ensure it's a tuple of strings
+  role: z.enum(Object.values(Role) as [Role, ...Role[]]),
   work: z.array(z.string().uuid()).optional(),
   ownedWork: z.array(z.string().uuid()).optional(),
 });
